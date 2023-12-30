@@ -12,7 +12,7 @@ public class LoginController {
 
     @GetMapping("/")
     public ResponseEntity<String> greet() {
-        String greetMessage = "Hello Dharani, Thanks for visiting";
+        String greetMessage = "Hey, Thank for visiting";
         logger.info("Greeting the user");
         return ResponseEntity.ok(greetMessage);
     }
