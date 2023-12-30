@@ -12,19 +12,10 @@ COPY gradle ./gradle
 COPY src ./src
 
 # Download Gradle (if not already cached)
-RUN ./gradlew --no-daemon build
-
-# Use a smaller base image for the runtime environment
-FROM eclipse-temurin:17-jdk-jammy
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the compiled Spring Boot application JAR file from the builder stage
-COPY --from=builder /app/build/libs/*.jar /app/application.jar
+RUN ./gradlew --no-daemon clean build
 
 # Expose the port that your Spring Boot application uses (default is 8080)
 EXPOSE 8080
 
 # Command to run the Spring Boot application when the container starts
-CMD ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "/app/build/libs/application.jar"]
