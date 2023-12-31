@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public ResponseEntity<String> greet() {
         String greetMessage = "Hey, Thank for visiting";
         logger.info("Greeting the user");
