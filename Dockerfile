@@ -1,21 +1,18 @@
-# Use a base image with Java 17
-FROM eclipse-temurin:17-jdk-jammy as builder
-
-# Set the working directory in the container
+# Stage 1: Build Stage
+FROM bellsoft/liberica-openjdk-alpine:17.0.7-7 as builder
 WORKDIR /app
 
-# Copy only the necessary files to the container
 COPY build.gradle .
 COPY settings.gradle .
 COPY gradlew .
 COPY gradle ./gradle
 COPY src ./src
 
-# Download Gradle (if not already cached)
-RUN ./gradlew --no-daemon clean build
+RUN ./gradlew --no-daemon clean build -x test
 
-# Expose the port that your Spring Boot application uses (default is 8080)
+FROM bellsoft/liberica-runtime-container:jre-17-slim-musl
+WORKDIR /app
+COPY --from=builder /app/build/libs/application.jar /app/build/libs/application.jar
 EXPOSE 8080
 
-# Command to run the Spring Boot application when the container starts
 ENTRYPOINT ["java", "-jar", "/app/build/libs/application.jar"]
